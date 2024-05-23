@@ -37,23 +37,23 @@ class PCA:
             X (np.ndarray): Data to be fitted, of shape (n_samples, n_features).
         """
         # Center the data by subtracting the mean
-        self.mean = np.mean(X, axis=0)
-        X_centered = X - self.mean
+        self.mean = np.mean(X, axis=0) # 计算每一列的均值
+        X_centered = X - self.mean # 每一列减去均值
         
         # Compute the covariance matrix
-        cov_mat = np.cov(X_centered, rowvar=False)
+        cov_mat = np.cov(X_centered, rowvar=False) # rowvar=False表示每一列代表一个特征，计算协方差矩阵
         
         # Compute the eigenvalues and eigenvectors
-        eigenvalues, eigenvectors = np.linalg.eigh(cov_mat)
+        eigenvalues, eigenvectors = np.linalg.eigh(cov_mat) # 计算协方差矩阵的特征值和特征向量
         
         # Sort eigenvectors by descending eigenvalues
-        sorted_indices = np.argsort(eigenvalues)[::-1]
-        eigenvectors = eigenvectors[:, sorted_indices]
-        eigenvalues = eigenvalues[sorted_indices]
+        sorted_indices = np.argsort(eigenvalues)[::-1] # 降序排列特征值的索引
+        eigenvectors = eigenvectors[:, sorted_indices] # 重新排列特征向量
+        eigenvalues = eigenvalues[sorted_indices] # 重新排列特征值
         
         # Keep only the top n_components eigenvectors
-        self.components = eigenvectors[:, :self.n_components]
-        self.explained_variance = eigenvalues[:self.n_components]
+        self.components = eigenvectors[:, :self.n_components] # 取前n_components个特征向量
+        self.explained_variance = eigenvalues[:self.n_components] # 取前n_components个特征值
     
     def transform(self, X: np.ndarray) -> np.ndarray:
         """
