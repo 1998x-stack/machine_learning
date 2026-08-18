@@ -109,45 +109,51 @@ def em_algorithm(data: np.ndarray, K: int, max_iters: int = 100, tol: float = 1e
 
     return weights, means, covariances, log_likelihoods
 
-# 生成测试数据
-np.random.seed(42)
-n_samples = 300
-C = np.array([[0., -0.1], [1.7, 0.4]])
-X_train = np.r_[np.dot(np.random.randn(n_samples, 2), C),
-                np.dot(np.random.randn(n_samples, 2), C) + np.array([3, 3])]
 
-# 运行 EM 算法
-K = 2
-weights, means, covariances, log_likelihoods = em_algorithm(X_train, K)
+def main():
+    # 生成测试数据
+    np.random.seed(42)
+    n_samples = 300
+    C = np.array([[0., -0.1], [1.7, 0.4]])
+    X_train = np.r_[np.dot(np.random.randn(n_samples, 2), C),
+                    np.dot(np.random.randn(n_samples, 2), C) + np.array([3, 3])]
 
-# 可视化优化过程中的参数变化
-plt.figure(figsize=(10, 6))
-plt.plot(log_likelihoods)
-plt.title('Log-Likelihood during EM Optimization')
-plt.xlabel('Iteration')
-plt.ylabel('Log-Likelihood')
-plt.grid(True)
-plt.savefig('figures/Log-Likelihood during EM Optimization.png')
-plt.close()
+    # 运行 EM 算法
+    K = 2
+    weights, means, covariances, log_likelihoods = em_algorithm(X_train, K)
 
-# 可视化聚类结果
-def plot_gmm(X, means, covariances, title):
+    # 可视化优化过程中的参数变化
     plt.figure(figsize=(10, 6))
-    plt.scatter(X[:, 0], X[:, 1], s=10, cmap='viridis')
-    plt.title(title)
-    
-    for mean, cov in zip(means, covariances):
-        eigenvalues, eigenvectors = np.linalg.eigh(cov)
-        axis_length = 2 * np.sqrt(eigenvalues)
-        angle = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
-        
-        ellipse = plt.matplotlib.patches.Ellipse(mean, *axis_length, angle, edgecolor='red', facecolor='none')
-        plt.gca().add_patch(ellipse)
-    
-    plt.xlabel('Feature 1')
-    plt.ylabel('Feature 2')
+    plt.plot(log_likelihoods)
+    plt.title('Log-Likelihood during EM Optimization')
+    plt.xlabel('Iteration')
+    plt.ylabel('Log-Likelihood')
     plt.grid(True)
-    plt.savefig(f'figures/{title}.png')
+    plt.savefig('figures/Log-Likelihood during EM Optimization.png')
     plt.close()
 
-plot_gmm(X_train, means, covariances, 'GMM Clustering Result')
+    # 可视化聚类结果
+    def plot_gmm(X, means, covariances, title):
+        plt.figure(figsize=(10, 6))
+        plt.scatter(X[:, 0], X[:, 1], s=10, cmap='viridis')
+        plt.title(title)
+
+        for mean, cov in zip(means, covariances):
+            eigenvalues, eigenvectors = np.linalg.eigh(cov)
+            axis_length = 2 * np.sqrt(eigenvalues)
+            angle = np.degrees(np.arctan2(*eigenvectors[:, 0][::-1]))
+
+            ellipse = plt.matplotlib.patches.Ellipse(mean, *axis_length, angle, edgecolor='red', facecolor='none')
+            plt.gca().add_patch(ellipse)
+
+        plt.xlabel('Feature 1')
+        plt.ylabel('Feature 2')
+        plt.grid(True)
+        plt.savefig(f'figures/{title}.png')
+        plt.close()
+
+    plot_gmm(X_train, means, covariances, 'GMM Clustering Result')
+
+
+if __name__ == "__main__":
+    main()

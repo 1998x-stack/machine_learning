@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "99x-ml-algorithms"
+version = "0.1.0"
+description = "From-scratch implementations and tutorials for 15 classic machine-learning algorithms."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = [
+    "numpy>=1.21",
+    "scipy>=1.7",
+    "matplotlib>=3.5",
+    "scikit-learn>=1.0",
+    "seaborn>=0.12",
+    "tqdm>=4.60",
+]
+
+[tool.setuptools]
+# Modules live as loose, self-contained scripts under each algorithm folder.
+# The package is not pip-installable as a single namespace; run scripts directly
+# or via `pytest` with the repo root on sys.path (see tests/conftest.py).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+extend-exclude = ["figures"]

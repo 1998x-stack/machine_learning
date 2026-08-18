@@ -1,4 +1,5 @@
 import numpy as np
+import os
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 from typing import List, Tuple
@@ -37,11 +38,12 @@ def preprocess_data(documents: List[str]) -> Tuple[np.ndarray, List[str]]:
     return X.toarray(), vectorizer.get_feature_names_out()
 
 # 加载数据
-documents, labels = load_data('directory/to/data')
+if __name__ == "__main__":
+    documents, labels = load_data('directory/to/data')
 
-# 预处理数据
-X, feature_names = preprocess_data(documents)
-print("Data preprocessing complete.")
+    # 预处理数据
+    X, feature_names = preprocess_data(documents)
+    print("Data preprocessing complete.")
 
 class LDA:
     """Latent Dirichlet Allocation using NumPy.
@@ -130,11 +132,17 @@ def visualize_topics(doc_topic_dist: np.ndarray, n_topics: int):
     plt.ylabel('PCA Component 2')
     plt.show()
 
-# 运行LDA模型
-lda_model = LDA(n_topics=5, alpha=0.1, beta=0.1, n_iter=100)  # Reduced topics and iterations for quick execution
-doc_topic_dist = lda_model.fit_transform(X)
-print("LDA fitting complete.")
 
-# 可视化主题分布
-visualize_topics(doc_topic_dist, lda_model.n_topics)
-print("Topic visualization complete.")
+def main():
+    # 运行LDA模型
+    lda_model = LDA(n_topics=5, alpha=0.1, beta=0.1, n_iter=100)  # Reduced topics and iterations for quick execution
+    doc_topic_dist = lda_model.fit_transform(X)
+    print("LDA fitting complete.")
+
+    # 可视化主题分布
+    visualize_topics(doc_topic_dist, lda_model.n_topics)
+    print("Topic visualization complete.")
+
+
+if __name__ == "__main__":
+    main()

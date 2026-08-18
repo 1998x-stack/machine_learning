@@ -56,53 +56,59 @@ class NearestNeighbor:
 # 创建一个示例对象并显示其方法的文档字符串
 knn = NearestNeighbor()
 print(knn.__doc__)
-from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
-# 加载鸢尾花数据集
-iris = load_iris()
-X, y = iris.data, iris.target
+def main():
+    from sklearn.datasets import load_iris
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
 
-# 数据标准化
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+    # 加载鸢尾花数据集
+    iris = load_iris()
+    X, y = iris.data, iris.target
 
-# 分割为训练集和测试集
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
+    # 数据标准化
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
 
-# 检查数据集的大小和维度
-X_train.shape, X_test.shape, y_train.shape, y_test.shape
+    # 分割为训练集和测试集
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
 
-# 实例化KNN模型并进行训练
-knn.fit(X_train, y_train)
+    # 检查数据集的大小和维度
+    X_train.shape, X_test.shape, y_train.shape, y_test.shape
 
-# 在测试集上进行预测
-y_pred = knn.predict(X_test)
+    # 实例化KNN模型并进行训练
+    knn.fit(X_train, y_train)
 
-# 计算测试集的准确率
-accuracy = np.mean(y_pred == y_test)
-accuracy
+    # 在测试集上进行预测
+    y_pred = knn.predict(X_test)
 
-import matplotlib.pyplot as plt
+    # 计算测试集的准确率
+    accuracy = np.mean(y_pred == y_test)
+    accuracy
 
-# 选择两个特征进行可视化
-feature_x = 0
-feature_y = 1
+    import matplotlib.pyplot as plt
 
-# 使用测试集的两个特征进行绘图
-plt.figure(figsize=(8, 6))
+    # 选择两个特征进行可视化
+    feature_x = 0
+    feature_y = 1
 
-# 原始标签
-plt.scatter(X_test[:, feature_x], X_test[:, feature_y], c=y_test, marker='o', label='Actual', alpha=0.5)
+    # 使用测试集的两个特征进行绘图
+    plt.figure(figsize=(8, 6))
 
-# 预测标签
-plt.scatter(X_test[:, feature_x], X_test[:, feature_y], c=y_pred, marker='x', label='Predicted', alpha=0.7)
+    # 原始标签
+    plt.scatter(X_test[:, feature_x], X_test[:, feature_y], c=y_test, marker='o', label='Actual', alpha=0.5)
 
-# 图例和标签
-plt.legend()
-plt.xlabel(iris.feature_names[feature_x])
-plt.ylabel(iris.feature_names[feature_y])
-plt.title('KNN Classification Results on Iris Dataset')
+    # 预测标签
+    plt.scatter(X_test[:, feature_x], X_test[:, feature_y], c=y_pred, marker='x', label='Predicted', alpha=0.7)
 
-plt.show()
+    # 图例和标签
+    plt.legend()
+    plt.xlabel(iris.feature_names[feature_x])
+    plt.ylabel(iris.feature_names[feature_y])
+    plt.title('KNN Classification Results on Iris Dataset')
+
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()
