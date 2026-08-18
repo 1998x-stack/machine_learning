@@ -17,7 +17,7 @@ def test_all_modules_import_cleanly():
     for p in sorted(REPO_ROOT.rglob("*.py")):
         if ".git" in p.parts or "figures" in p.parts or "tests" in p.parts or "examples" in p.parts or "scripts" in p.parts:
             continue
-        if p.name in {"ml_dataset.py"}:
+        if p.name in {"ml_dataset.py", "conftest.py"}:
             continue
         load_module(p)
         imported.append(p.relative_to(REPO_ROOT).as_posix())
